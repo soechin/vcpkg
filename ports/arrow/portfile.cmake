@@ -7,12 +7,11 @@ endif()
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO apache/arrow
-    REF apache-arrow-0.15.1
-    SHA512 f371c687ad8f944c3552f2111ee3c721b89fd0cea01c4ab64c22322fe1ad96f6feff851b6f5505d8522ff4a28e59f6cafa6ce1ee0bc291d83338e4297150dc9e
+    REF apache-arrow-0.17.0
+    SHA512 293737db80defa0f8766f726dc228ace50936f7124647de15c2e024c2901ded1cda893d771d38aa4e9ab19ff7eb06b11dfc230587ca5b17cdd87e681fc3009ca
     HEAD_REF master
     PATCHES
         all.patch
-        fix-msvc-1900.patch
 )
 
 string(COMPARE EQUAL ${VCPKG_LIBRARY_LINKAGE} "dynamic" ARROW_BUILD_SHARED)
@@ -31,6 +30,13 @@ vcpkg_configure_cmake(
         -DARROW_GFLAGS_USE_SHARED=off
         -DARROW_JEMALLOC=off
         -DARROW_BUILD_UTILITIES=OFF
+        -DARROW_WITH_BZ2=ON
+        -DARROW_WITH_ZLIB=ON
+        -DARROW_WITH_ZSTD=ON
+        -DARROW_WITH_LZ4=ON
+        -DARROW_WITH_SNAPPY=ON
+        -DARROW_WITH_BROTLI=ON
+        -DPARQUET_REQUIRE_ENCRYPTION=ON
 )
 
 vcpkg_install_cmake()
