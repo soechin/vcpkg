@@ -1,19 +1,20 @@
 #include "pch.h"
 
 #include <vcpkg/base/system.print.h>
+#include <vcpkg/binarycaching.h>
 #include <vcpkg/commands.h>
 #include <vcpkg/globalstate.h>
 #include <vcpkg/help.h>
 #include <vcpkg/input.h>
 #include <vcpkg/install.h>
-#include <vcpkg/remove.h>
 #include <vcpkg/portfileprovider.h>
+#include <vcpkg/remove.h>
 #include <vcpkg/vcpkglib.h>
 
 namespace vcpkg::Commands::SetInstalled
 {
     const CommandStructure COMMAND_STRUCTURE = {
-        Help::create_example_string(R"(x-set-installed <package>...)"),
+        create_example_string(R"(x-set-installed <package>...)"),
         1,
         SIZE_MAX,
         {},
@@ -35,6 +36,9 @@ namespace vcpkg::Commands::SetInstalled
             Input::check_triplet(spec.package_spec.triplet(), paths);
         }
 
+        auto binaryprovider =
+            create_binary_provider_from_configs(paths, args.binarysources).value_or_exit(VCPKG_LINE_INFO);
+
         const Build::BuildPackageOptions install_plan_options = {
             Build::UseHeadVersion::NO,
             Build::AllowDownloads::YES,
@@ -43,10 +47,9 @@ namespace vcpkg::Commands::SetInstalled
             Build::CleanPackages::YES,
             Build::CleanDownloads::YES,
             Build::DownloadTool::BUILT_IN,
-            GlobalState::g_binary_caching ? Build::BinaryCaching::YES : Build::BinaryCaching::NO,
+            args.binary_caching_enabled() ? Build::BinaryCaching::YES : Build::BinaryCaching::NO,
             Build::FailOnTombstone::NO,
         };
-
 
         PortFileProvider::PathsPortFileProvider provider(paths, args.overlay_ports.get());
         auto cmake_vars = CMakeVars::make_triplet_cmake_var_provider(paths);
@@ -66,7 +69,8 @@ namespace vcpkg::Commands::SetInstalled
 
         std::set<std::string> all_abis;
 
-        for (const auto& action : action_plan.install_actions) {
+        for (const auto& action : action_plan.install_actions)
+        {
             all_abis.insert(action.package_abi.value_or_exit(VCPKG_LINE_INFO));
         }
 
@@ -101,7 +105,8 @@ namespace vcpkg::Commands::SetInstalled
 
         Dependencies::print_plan(real_action_plan, true);
 
-        const auto summary = Install::perform(real_action_plan, Install::KeepGoing::NO, paths, status_db, *cmake_vars);
+        const auto summary =
+            Install::perform(real_action_plan, Install::KeepGoing::NO, paths, status_db, *binaryprovider, *cmake_vars);
 
         System::print2("\nTotal elapsed time: ", summary.total_elapsed_time, "\n\n");
 
