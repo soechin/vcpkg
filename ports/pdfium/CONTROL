@@ -1,0 +1,4 @@
+Source: pdfium
+Version: 86.0.4240
+Description: PDF generation and rendering library.
+Homepage: https://pdfium.googlesource.com/pdfium/
