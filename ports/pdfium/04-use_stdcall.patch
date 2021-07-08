@@ -1,0 +1,93 @@
+diff --git a/public/fpdf_edit.h b/public/fpdf_edit.h
+index d415460bf..ae1d2250a 100644
+--- a/public/fpdf_edit.h
++++ b/public/fpdf_edit.h
+@@ -97,7 +97,7 @@ extern "C" {
+ // Create a new PDF document.
+ //
+ // Returns a handle to a new document, or NULL on failure.
+-FPDF_EXPORT FPDF_DOCUMENT FPDF_CALLCONV FPDF_CreateNewDocument();
++FPDF_EXPORT FPDF_DOCUMENT FPDF_CALLCONV FPDF_CreateNewDocument(void);
+ 
+ // Create a new PDF page.
+ //
+diff --git a/public/fpdf_sysfontinfo.h b/public/fpdf_sysfontinfo.h
+index 936de962f..b5e3bcff1 100644
+--- a/public/fpdf_sysfontinfo.h
++++ b/public/fpdf_sysfontinfo.h
+@@ -241,7 +241,7 @@ typedef struct FPDF_CharsetFontMap_ {
+  * Return Value:
+  *     Pointer to the Charset Font Map.
+  */
+-FPDF_EXPORT const FPDF_CharsetFontMap* FPDF_CALLCONV FPDF_GetDefaultTTFMap();
++FPDF_EXPORT const FPDF_CharsetFontMap* FPDF_CALLCONV FPDF_GetDefaultTTFMap(void);
+ 
+ /*
+  * Function: FPDF_AddInstalledFont
+@@ -290,7 +290,7 @@ FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
+  *          font info interface. The default implementation can be passed to
+  *          FPDF_SetSystemFontInfo().
+  */
+-FPDF_EXPORT FPDF_SYSFONTINFO* FPDF_CALLCONV FPDF_GetDefaultSystemFontInfo();
++FPDF_EXPORT FPDF_SYSFONTINFO* FPDF_CALLCONV FPDF_GetDefaultSystemFontInfo(void);
+ 
+ /*
+  * Function: FPDF_FreeDefaultSystemFontInfo
+diff --git a/public/fpdfview.h b/public/fpdfview.h
+index 2eb40d4dd..369d21f6c 100644
+--- a/public/fpdfview.h
++++ b/public/fpdfview.h
+@@ -190,7 +190,7 @@ typedef int FPDF_OBJECT_TYPE;
+ #endif  // defined(FPDF_IMPLEMENTATION)
+ #endif  // defined(WIN32)
+ 
+-#if defined(WIN32) && defined(FPDFSDK_EXPORTS)
++#if defined(WIN32)
+ #define FPDF_CALLCONV __stdcall
+ #else
+ #define FPDF_CALLCONV
+@@ -211,7 +211,7 @@ extern "C" {
+ //          Convenience function to call FPDF_InitLibraryWithConfig() for
+ //          backwards compatibility purposes. This will be deprecated in the
+ //          future.
+-FPDF_EXPORT void FPDF_CALLCONV FPDF_InitLibrary();
++FPDF_EXPORT void FPDF_CALLCONV FPDF_InitLibrary(void);
+ 
+ // Process-wide options for initializing the library.
+ typedef struct FPDF_LIBRARY_CONFIG_ {
+@@ -266,7 +266,7 @@ FPDF_InitLibraryWithConfig(const FPDF_LIBRARY_CONFIG* config);
+ //          the library.
+ //          After this function is called, you should not call any PDF
+ //          processing functions.
+-FPDF_EXPORT void FPDF_CALLCONV FPDF_DestroyLibrary();
++FPDF_EXPORT void FPDF_CALLCONV FPDF_DestroyLibrary(void);
+ 
+ // Policy for accessing the local machine time.
+ #define FPDF_POLICY_MACHINETIME_ACCESS 0
+@@ -583,7 +583,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_GetFileVersion(FPDF_DOCUMENT doc,
+ // Comments:
+ //          If the previous SDK call succeeded, the return value of this
+ //          function is not defined.
+-FPDF_EXPORT unsigned long FPDF_CALLCONV FPDF_GetLastError();
++FPDF_EXPORT unsigned long FPDF_CALLCONV FPDF_GetLastError(void);
+ 
+ // Experimental API.
+ // Function: FPDF_DocumentHasValidCrossReferenceTable
+@@ -1355,7 +1355,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_GetXFAPacketContent(
+ // Return value:
+ //          NUL-terminated string of the form "--flag1 --flag2".
+ //          The caller must not attempt to modify or free the result.
+-FPDF_EXPORT const char* FPDF_CALLCONV FPDF_GetRecommendedV8Flags();
++FPDF_EXPORT const char* FPDF_CALLCONV FPDF_GetRecommendedV8Flags(void);
+ 
+ // Experimental API.
+ // Function: FPDF_GetArrayBufferAllocatorSharedInstance()
+@@ -1370,7 +1370,7 @@ FPDF_EXPORT const char* FPDF_CALLCONV FPDF_GetRecommendedV8Flags();
+ //          Use is optional, but allows external creation of isolates
+ //          matching the ones PDFium will make when none is provided
+ //          via |FPDF_LIBRARY_CONFIG::m_pIsolate|.
+-FPDF_EXPORT void* FPDF_CALLCONV FPDF_GetArrayBufferAllocatorSharedInstance();
++FPDF_EXPORT void* FPDF_CALLCONV FPDF_GetArrayBufferAllocatorSharedInstance(void);
+ #endif  // PDF_ENABLE_V8
+ 
+ #ifdef PDF_ENABLE_XFA

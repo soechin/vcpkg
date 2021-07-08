@@ -1,0 +1,14 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index c13936f25..6f5446b86 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -188,6 +188,9 @@ shared_library("pdfium") {
+       "gdi32.lib",
+       "user32.lib",
+     ]
++    sources = [
++      "resources.rc"
++    ]
+   }
+ 
+   if (is_mac) {
