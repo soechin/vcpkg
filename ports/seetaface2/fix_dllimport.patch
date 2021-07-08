@@ -1,0 +1,102 @@
+diff --git a/FaceDetector/include/seeta/CStruct.h b/FaceDetector/include/seeta/CStruct.h
+index 334ee29..b8b55a0 100644
+--- a/FaceDetector/include/seeta/CStruct.h
++++ b/FaceDetector/include/seeta/CStruct.h
+@@ -2,10 +2,12 @@
+ #define INC_SEETA_C_STRUCT_H
+ 
+ #ifdef _MSC_VER
+-    #ifdef SEETA_EXPORTS
++    #if defined(SEETA_EXPORTS)
+         #define SEETA_API __declspec(dllexport)
+-    #else
++    #elif defined(SEETA_IMPORTS)
+         #define SEETA_API __declspec(dllimport)
++    #else
++        #define SEETA_API
+     #endif
+ #else
+     #define SEETA_API __attribute__ ((visibility("default")))
+diff --git a/FaceLandmarker/include/seeta/CStruct.h b/FaceLandmarker/include/seeta/CStruct.h
+index 334ee29..b8b55a0 100644
+--- a/FaceLandmarker/include/seeta/CStruct.h
++++ b/FaceLandmarker/include/seeta/CStruct.h
+@@ -2,10 +2,12 @@
+ #define INC_SEETA_C_STRUCT_H
+ 
+ #ifdef _MSC_VER
+-    #ifdef SEETA_EXPORTS
++    #if defined(SEETA_EXPORTS)
+         #define SEETA_API __declspec(dllexport)
+-    #else
++    #elif defined(SEETA_IMPORTS)
+         #define SEETA_API __declspec(dllimport)
++    #else
++        #define SEETA_API
+     #endif
+ #else
+     #define SEETA_API __attribute__ ((visibility("default")))
+diff --git a/FaceRecognizer/include/seeta/CStruct.h b/FaceRecognizer/include/seeta/CStruct.h
+index 334ee29..b8b55a0 100644
+--- a/FaceRecognizer/include/seeta/CStruct.h
++++ b/FaceRecognizer/include/seeta/CStruct.h
+@@ -2,10 +2,12 @@
+ #define INC_SEETA_C_STRUCT_H
+ 
+ #ifdef _MSC_VER
+-    #ifdef SEETA_EXPORTS
++    #if defined(SEETA_EXPORTS)
+         #define SEETA_API __declspec(dllexport)
+-    #else
++    #elif defined(SEETA_IMPORTS)
+         #define SEETA_API __declspec(dllimport)
++    #else
++        #define SEETA_API
+     #endif
+ #else
+     #define SEETA_API __attribute__ ((visibility("default")))
+diff --git a/FaceTracker/include/seeta/CStruct.h b/FaceTracker/include/seeta/CStruct.h
+index 4c3c8ed..1c60f9e 100644
+--- a/FaceTracker/include/seeta/CStruct.h
++++ b/FaceTracker/include/seeta/CStruct.h
+@@ -2,13 +2,15 @@
+ #define INC_SEETA_C_STRUCT_H
+ 
+ #ifdef _MSC_VER
+-#ifdef SEETA_EXPORTS
+-#define SEETA_API __declspec(dllexport)
++    #if defined(SEETA_EXPORTS)
++        #define SEETA_API __declspec(dllexport)
++    #elif defined(SEETA_IMPORTS)
++        #define SEETA_API __declspec(dllimport)
++    #else
++        #define SEETA_API
++    #endif
+ #else
+-#define SEETA_API __declspec(dllimport)
+-#endif
+-#else
+-#define SEETA_API __attribute__ ((visibility("default")))
++    #define SEETA_API __attribute__ ((visibility("default")))
+ #endif
+ 
+ #define SEETA_C_API extern "C" SEETA_API
+diff --git a/QualityAssessor/include/seeta/CStruct.h b/QualityAssessor/include/seeta/CStruct.h
+index 334ee29..b8b55a0 100644
+--- a/QualityAssessor/include/seeta/CStruct.h
++++ b/QualityAssessor/include/seeta/CStruct.h
+@@ -2,10 +2,12 @@
+ #define INC_SEETA_C_STRUCT_H
+ 
+ #ifdef _MSC_VER
+-    #ifdef SEETA_EXPORTS
++    #if defined(SEETA_EXPORTS)
+         #define SEETA_API __declspec(dllexport)
+-    #else
++    #elif defined(SEETA_IMPORTS)
+         #define SEETA_API __declspec(dllimport)
++    #else
++        #define SEETA_API
+     #endif
+ #else
+     #define SEETA_API __attribute__ ((visibility("default")))
