@@ -1,8 +1,8 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO DaanDeMeyer/reproc
-    REF v10.0.3
-    SHA512 6d102962fbfb61b239d243fd38f7519c28cf7098e2e1a2bfd19035fa7152f4dcc51875683c76c1fa7274b786dde4b90873ae4a1eb6e5d9e485e6614ab06bf0d2
+    REF 4bfa5fe500288a0bcd9134533b87dbf8183fd158 # v14.1.0
+    SHA512 258046b6b76e8513aa35e6e6a1a5245c9d91eadd0aaa6fe41869080d1b74669350eca86e7025581252327a01c2687d77991721d08554b505d2025e063ae4cc88
     HEAD_REF master
 )
 
@@ -10,7 +10,7 @@ vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
     OPTIONS
-        -DREPROCXX=ON
+        -DREPROC++=ON
         -DREPROC_INSTALL_PKGCONFIG=OFF
         -DREPROC_INSTALL_CMAKECONFIGDIR=share
 )
@@ -19,7 +19,7 @@ vcpkg_install_cmake()
 
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 
-foreach(TARGET reproc reprocxx)
+foreach(TARGET reproc reproc++)
     vcpkg_fixup_cmake_targets(
         CONFIG_PATH share/${TARGET} 
         TARGET_PATH share/${TARGET}

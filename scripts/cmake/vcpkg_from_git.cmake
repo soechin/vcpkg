@@ -19,7 +19,7 @@
 ## This should be set to `SOURCE_PATH` by convention.
 ##
 ## ### URL
-## The url of the git repository.  Must start with `https`.
+## The url of the git repository.
 ##
 ## ### REF
 ## The git sha of the commit to download.
@@ -36,10 +36,13 @@
 ##
 ## * [fdlibm](https://github.com/Microsoft/vcpkg/blob/master/ports/fdlibm/portfile.cmake)
 
+include(vcpkg_execute_in_download_mode)
+
 function(vcpkg_from_git)
   set(oneValueArgs OUT_SOURCE_PATH URL REF)
   set(multipleValuesArgs PATCHES)
-  cmake_parse_arguments(_vdud "" "${oneValueArgs}" "${multipleValuesArgs}" ${ARGN})
+  # parse parameters such that semicolons in options arguments to COMMAND don't get erased
+  cmake_parse_arguments(PARSE_ARGV 0 _vdud "" "${oneValueArgs}" "${multipleValuesArgs}")
 
   if(NOT DEFINED _vdud_OUT_SOURCE_PATH)
     message(FATAL_ERROR "OUT_SOURCE_PATH must be specified.")
@@ -47,13 +50,6 @@ function(vcpkg_from_git)
 
   if(NOT DEFINED _vdud_URL)
     message(FATAL_ERROR "The git url must be specified")
-  endif()
-
-  if( NOT _vdud_URL MATCHES "^https:")
-    # vcpkg_from_git does not support a SHA256 parameter because hashing the git archive is
-    # not stable across all supported platforms.  The tradeoff is to require https to download
-    # and the ref to be the git sha (i.e. not things that can change like a label)
-    message(FATAL_ERROR "The git url must be https")
   endif()
 
   if(NOT DEFINED _vdud_REF)
@@ -85,7 +81,7 @@ function(vcpkg_from_git)
       WORKING_DIRECTORY ${DOWNLOADS}/git-tmp
       LOGNAME git-fetch-${TARGET_TRIPLET}
     )
-    _execute_process(
+    vcpkg_execute_in_download_mode(
       COMMAND ${GIT} rev-parse FETCH_HEAD
       OUTPUT_VARIABLE REV_PARSE_HEAD
       ERROR_VARIABLE REV_PARSE_HEAD

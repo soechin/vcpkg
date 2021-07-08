@@ -1,13 +1,13 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5b7d37359..9ab8954b6 100644
+index 01eea8889..14a4b1a40 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -445,7 +445,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
- include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/third-party/gtest-1.7.0/fused-src)
- find_package(Threads REQUIRED)
+@@ -1015,7 +1015,7 @@ endif()
+ option(WITH_ALL_TESTS "Build all test, rather than a small subset" ON)
  
--add_subdirectory(third-party/gtest-1.7.0/fused-src/gtest)
-+#add_subdirectory(third-party/gtest-1.7.0/fused-src/gtest)
- 
- # Main library source code
- 
+ if(WITH_TESTS OR WITH_BENCHMARK_TOOLS)
+-  add_subdirectory(third-party/gtest-1.8.1/fused-src/gtest)
++  #add_subdirectory(third-party/gtest-1.8.1/fused-src/gtest)
+   add_library(testharness STATIC
+   test_util/mock_time_env.cc
+   test_util/testharness.cc)
