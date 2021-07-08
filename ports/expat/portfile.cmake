@@ -1,22 +1,47 @@
+if(VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+message(FATAL_ERROR "${PORT} does not currently support UWP")
+endif()
+
 include(vcpkg_common_functions)
-vcpkg_download_distfile(ARCHIVE_FILE
-    URL "http://downloads.sourceforge.net/project/expat/expat/2.1.1/expat-2.1.1.tar.bz2"
-    FILENAME "expat-2.1.1.tar.bz2"
-    MD5 7380a64a8e3a9d66a9887b01d0d7ea81
-)
-vcpkg_extract_source_archive(${ARCHIVE_FILE})
+vcpkg_from_github(
+    OUT_SOURCE_PATH SOURCE_PATH
+    REPO libexpat/libexpat
+    REF R_2_2_7
+    SHA512 11b1f9a135c4501ef0112e17da8381e956366165a11a384daedd4cdef9a00c3112c8f6ff8c8f6d3b5e7b71b9a73041f23beac0f27e9cfafe1ec0266d95870408
+    HEAD_REF master)
+
+if(VCPKG_LIBRARY_LINKAGE STREQUAL dynamic)
+    set(EXPAT_LINKAGE ON)
+else()
+    set(EXPAT_LINKAGE OFF)
+endif()
 
 vcpkg_configure_cmake(
-    SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/expat-2.1.1
+    SOURCE_PATH ${SOURCE_PATH}/expat
+    PREFER_NINJA
     OPTIONS
         -DBUILD_examples=OFF
         -DBUILD_tests=OFF
         -DBUILD_tools=OFF
+        -DBUILD_shared=${EXPAT_LINKAGE}
 )
 
-vcpkg_build_cmake()
 vcpkg_install_cmake()
 
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include ${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig ${CURRENT_PACKAGES_DIR}/lib/pkgconfig)
-file(INSTALL ${CURRENT_BUILDTREES_DIR}/src/expat-2.1.1/COPYING DESTINATION ${CURRENT_PACKAGES_DIR}/share/expat RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/expat/COPYING DESTINATION ${CURRENT_PACKAGES_DIR}/share/expat RENAME copyright)
+
 vcpkg_copy_pdbs()
+
+# CMake's FindExpat currently doesn't look for expatd.lib
+if(EXISTS ${CURRENT_PACKAGES_DIR}/debug/lib/expatd.lib)
+    file(RENAME ${CURRENT_PACKAGES_DIR}/debug/lib/expatd.lib ${CURRENT_PACKAGES_DIR}/debug/lib/expat.lib)
+endif()
+
+file(READ ${CURRENT_PACKAGES_DIR}/include/expat_external.h EXPAT_EXTERNAL_H)
+if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
+    string(REPLACE "!defined(XML_STATIC)" "/* vcpkg static build !defined(XML_STATIC) */ 0" EXPAT_EXTERNAL_H "${EXPAT_EXTERNAL_H}")
+endif()
+file(WRITE ${CURRENT_PACKAGES_DIR}/include/expat_external.h "${EXPAT_EXTERNAL_H}")
+
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/usage DESTINATION ${CURRENT_PACKAGES_DIR}/share/expat)
