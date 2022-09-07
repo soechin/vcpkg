@@ -1,9 +1,16 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO libtcod/libtcod
-    REF 2311b47028f0879c1d3fc44e11d8352052b8d8b0
-    SHA512  7b3ab6daf6847d2d0993a1aa73d6d4b9b56684ac5f44cdf7d4ae551600c5354c72afdfa40abd837dda66b3bb1e4c0d50c8c9a7bf5a7e4915cbdc703211c7c917
-    HEAD_REF develop
+    REF 1.21.0
+    SHA512 1d18a49b0d66337e2b29ad6b9a4a412cc4d2fd723d9a3d3c983ff3ef2f5bee4422ea3469513e0fe3b2f885773fb5d70e17128bc473b952ab6e0de27f687c905e
+    HEAD_REF main
+)
+
+vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
+    INVERTED_FEATURES
+        "sdl" CMAKE_DISABLE_FIND_PACKAGE_SDL2
+        "sdl" CMAKE_DISABLE_FIND_PACKAGE_GLAD
+        "threads" CMAKE_DISABLE_FIND_PACKAGE_Threads
 )
 
 vcpkg_cmake_configure(
@@ -16,7 +23,7 @@ vcpkg_cmake_configure(
         -DLIBTCOD_GLAD=find_package
         -DLIBTCOD_LODEPNG=find_package
         -DLIBTCOD_UTF8PROC=vcpkg
-        -DLIBTCOD_STB=vcpkg
+        -DLIBTCOD_STB=find_package
 )
 
 vcpkg_cmake_install()
