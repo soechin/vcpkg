@@ -1,8 +1,8 @@
 diff --git a/public/fpdf_edit.h b/public/fpdf_edit.h
-index d415460bf..ae1d2250a 100644
+index c9029982b..61f45748a 100644
 --- a/public/fpdf_edit.h
 +++ b/public/fpdf_edit.h
-@@ -97,7 +97,7 @@ extern "C" {
+@@ -99,7 +99,7 @@ extern "C" {
  // Create a new PDF document.
  //
  // Returns a handle to a new document, or NULL on failure.
@@ -12,10 +12,10 @@ index d415460bf..ae1d2250a 100644
  // Create a new PDF page.
  //
 diff --git a/public/fpdf_sysfontinfo.h b/public/fpdf_sysfontinfo.h
-index 936de962f..b5e3bcff1 100644
+index 0a02a3582..fdc580ba3 100644
 --- a/public/fpdf_sysfontinfo.h
 +++ b/public/fpdf_sysfontinfo.h
-@@ -241,7 +241,7 @@ typedef struct FPDF_CharsetFontMap_ {
+@@ -245,7 +245,7 @@ typedef struct FPDF_CharsetFontMap_ {
   * Return Value:
   *     Pointer to the Charset Font Map.
   */
@@ -24,7 +24,7 @@ index 936de962f..b5e3bcff1 100644
  
  /*
   * Function: FPDF_AddInstalledFont
-@@ -290,7 +290,7 @@ FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
+@@ -294,7 +294,7 @@ FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
   *          font info interface. The default implementation can be passed to
   *          FPDF_SetSystemFontInfo().
   */
@@ -34,10 +34,10 @@ index 936de962f..b5e3bcff1 100644
  /*
   * Function: FPDF_FreeDefaultSystemFontInfo
 diff --git a/public/fpdfview.h b/public/fpdfview.h
-index 2eb40d4dd..369d21f6c 100644
+index 49939fe03..d2b272ad7 100644
 --- a/public/fpdfview.h
 +++ b/public/fpdfview.h
-@@ -190,7 +190,7 @@ typedef int FPDF_OBJECT_TYPE;
+@@ -205,7 +205,7 @@ typedef int FPDF_OBJECT_TYPE;
  #endif  // defined(FPDF_IMPLEMENTATION)
  #endif  // defined(WIN32)
  
@@ -46,7 +46,7 @@ index 2eb40d4dd..369d21f6c 100644
  #define FPDF_CALLCONV __stdcall
  #else
  #define FPDF_CALLCONV
-@@ -211,7 +211,7 @@ extern "C" {
+@@ -226,7 +226,7 @@ extern "C" {
  //          Convenience function to call FPDF_InitLibraryWithConfig() for
  //          backwards compatibility purposes. This will be deprecated in the
  //          future.
@@ -55,7 +55,7 @@ index 2eb40d4dd..369d21f6c 100644
  
  // Process-wide options for initializing the library.
  typedef struct FPDF_LIBRARY_CONFIG_ {
-@@ -266,7 +266,7 @@ FPDF_InitLibraryWithConfig(const FPDF_LIBRARY_CONFIG* config);
+@@ -281,7 +281,7 @@ FPDF_InitLibraryWithConfig(const FPDF_LIBRARY_CONFIG* config);
  //          the library.
  //          After this function is called, you should not call any PDF
  //          processing functions.
@@ -64,16 +64,16 @@ index 2eb40d4dd..369d21f6c 100644
  
  // Policy for accessing the local machine time.
  #define FPDF_POLICY_MACHINETIME_ACCESS 0
-@@ -583,7 +583,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_GetFileVersion(FPDF_DOCUMENT doc,
- // Comments:
+@@ -578,7 +578,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_GetFileVersion(FPDF_DOCUMENT doc,
  //          If the previous SDK call succeeded, the return value of this
- //          function is not defined.
+ //          function is not defined. This function only works in conjunction
+ //          with APIs that mention FPDF_GetLastError() in their documentation.
 -FPDF_EXPORT unsigned long FPDF_CALLCONV FPDF_GetLastError();
 +FPDF_EXPORT unsigned long FPDF_CALLCONV FPDF_GetLastError(void);
  
  // Experimental API.
  // Function: FPDF_DocumentHasValidCrossReferenceTable
-@@ -1355,7 +1355,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_GetXFAPacketContent(
+@@ -1377,7 +1377,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_GetXFAPacketContent(
  // Return value:
  //          NUL-terminated string of the form "--flag1 --flag2".
  //          The caller must not attempt to modify or free the result.
@@ -82,7 +82,7 @@ index 2eb40d4dd..369d21f6c 100644
  
  // Experimental API.
  // Function: FPDF_GetArrayBufferAllocatorSharedInstance()
-@@ -1370,7 +1370,7 @@ FPDF_EXPORT const char* FPDF_CALLCONV FPDF_GetRecommendedV8Flags();
+@@ -1392,7 +1392,7 @@ FPDF_EXPORT const char* FPDF_CALLCONV FPDF_GetRecommendedV8Flags();
  //          Use is optional, but allows external creation of isolates
  //          matching the ones PDFium will make when none is provided
  //          via |FPDF_LIBRARY_CONFIG::m_pIsolate|.

@@ -1,12 +1,12 @@
 # pdfium
 set(PDFIUM_URL "https://pdfium.googlesource.com/pdfium.git")
-set(PDFIUM_COMMIT "chromium/4240")
+set(PDFIUM_COMMIT "chromium/5195")
 set(PDFIUM_PARENT "${CURRENT_BUILDTREES_DIR}/src")
 set(PDFIUM_DIR "${CURRENT_BUILDTREES_DIR}/src/pdfium")
 
 # depot_tools
 set(DEPOT_URL "https://chromium.googlesource.com/chromium/tools/depot_tools.git")
-set(DEPOT_COMMIT "master")
+set(DEPOT_COMMIT "main")
 set(DEPOT_TOOLS "${CURRENT_BUILDTREES_DIR}/src/depot_tools")
 
 # environment variables
